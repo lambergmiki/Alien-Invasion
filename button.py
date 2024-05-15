@@ -3,7 +3,7 @@ import pygame.font # module that lets us render text to the screen
 class Button:
     """A class to build buttons for the game since pygame does not provide buttons"""
 
-    def __init__(self, ai_game, msg): # self, ai_game instance/object and msg (text on button)
+    def __init__(self, ai_game, msg, position = 'center'): # self, ai_game instance/object and msg (text on button)
         """Initialize button attributes"""
         self.screen = ai_game.screen
         self.screen_rect = self.screen.get_rect()
@@ -17,7 +17,14 @@ class Button:
 
         # Build the button's rect object and center it
         self.rect = pygame.Rect(0, 0, self.width, self.height)
-        self.rect.center = self.screen_rect.center
+
+        # Set the button position
+        if position == 'left':
+            self.rect.midleft = self.screen_rect.midleft
+        elif position == 'center':
+            self.rect.center = self.screen_rect.center
+        elif position == 'right':
+            self.rect.right = self.screen_rect.midright
 
         # The button message needs to be prepped only once
         self._prep_msg(msg) # msg är argumentet 'Play' i huvudfilen, rad 48.

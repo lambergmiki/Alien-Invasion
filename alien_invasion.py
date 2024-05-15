@@ -41,8 +41,10 @@ class AlienInvasion:
         # Start Alien Invasion in an inactive state
         self.game_active = False # spelet kan inte spelas nu förrän detta condition blir True (via en Playknapp, t.ex.)
 
-        # Create the play button:
-        self.play_button = Button(self, "Play")
+        # Create the play buttons:
+        self.ez_button = Button(self, "ez", 'left')
+        self.normal_button = Button(self, "Normal", 'center')
+        self.hard_button = Button(self, "hard", 'right')
 
 
     def run_game(self):
