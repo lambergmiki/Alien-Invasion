@@ -15,8 +15,8 @@ class Settings:
         self.ship_limit = 3 # antal möjliga skeppförluster innan game over
 
         # Bullet settings
-        self.bullet_width = 500
-        self.bullet_height = 8
+        self.bullet_width = 6
+        self.bullet_height = 12
         self.bullet_color = (60, 60, 60)
         self.bullets_allowed = 5
 
