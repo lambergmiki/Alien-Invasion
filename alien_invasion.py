@@ -109,24 +109,20 @@ class AlienInvasion:
 
     def _check_button_clicks(self, mouse_pos):
         """Start a new game with chosen difficulty based on button click"""
-        print("Checking button clicks")
         if self.ez_button.rect.collidepoint(mouse_pos) and not self.game_active: # utvärderar om x- och y-koordinaterna vid musklicket (mouse_pos)
                                                                                  # kolliderar med knappen (isf True)
                                                                                  # samt om game_active är True/False och invertera det med "not".
                                                                                  # om spelet är aktivt (True) blir det False, eftersom "not True" = False
-            print("Clicked EZ button")
             self._start_game(difficulty='ez')
         elif self.normal_button.rect.collidepoint(mouse_pos) and not self.game_active:
-            print("Clicked Normal button")
             self._start_game(difficulty='normal')
         elif self.hard_button.rect.collidepoint(mouse_pos) and not self.game_active:
-            print("Clicked Hard button")
             self._start_game(difficulty='hard')
 
 
     def _start_game(self, difficulty='normal'):
         """Start a new game."""
-        print("Starting game with difficulty:", difficulty)
+        
         # Set the game difficulty
         self.settings.set_difficulty(difficulty)
 
@@ -321,7 +317,7 @@ class AlienInvasion:
         # Draw the score information
         self.sb.show_score() # callar show_score-funktionen från scoreboard-modulen
 
-        # Draw the play button if the game is inactive (man vill ju inte att knappen stör midgame)
+        # Draw the mode buttons if the game is inactive
         if not self.game_active:
             self.ez_button.draw_button()
             self.normal_button.draw_button()
