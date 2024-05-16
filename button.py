@@ -24,7 +24,7 @@ class Button:
         elif position == 'center':
             self.rect.center = self.screen_rect.center
         elif position == 'right':
-            self.rect.right = self.screen_rect.midright
+            self.rect.midright = self.screen_rect.midright
 
         # The button message needs to be prepped only once
         self._prep_msg(msg) # msg är argumentet 'Play' i huvudfilen, rad 48.
