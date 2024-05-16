@@ -5,12 +5,7 @@ i huvudfilen är att det blir mindre clutter och enklare att jobba med en indivi
 class Settings:
     """A class to store all settings for Alien Invasion"""
     def __init__(self):
-        """Initalize the game's static settings"""
-        # Screen settings
-        self.screen_width = 1200
-        self.screen_height = 800
-        self.bg_color = (230, 230, 230) # motsvarar ljusgrått. 255, 0, 0 är rött. 0, 255, 0 är grönt och 0, 0, 255 är blått.
-
+        """Initalize the game's settings"""
         # Ship settings
         self.ship_limit = 3 # antal möjliga skeppförluster innan game over
 
@@ -28,9 +23,16 @@ class Settings:
         
         # How quickly the alien points values increase
         self.score_scale = 1.5
-
+        self.initialize_static_settings()
         self.initialize_dynamic_settings()
 
+
+    def initialize_static_settings(self):
+        """Initialize settings that do not change throughout the game"""
+        # Screen settings
+        self.screen_width = 1200
+        self.screen_height = 800
+        self.bg_color = (230, 230, 230) # motsvarar ljusgrått. 255, 0, 0 är rött. 0, 255, 0 är grönt och 0, 0, 255 är blått.
 
     def initialize_dynamic_settings(self):
         """Initialize settings that change throughout the game"""

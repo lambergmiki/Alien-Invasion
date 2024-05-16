@@ -87,7 +87,7 @@ class AlienInvasion:
                 self._check_keyup_events(event)
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos() # hämtar x- och y-koordinater vid tidpunkten för musklicket - dessa lagras i mouse_pos.
-                self._check_play_button(mouse_pos)
+                self._check_button_clicks(mouse_pos)
 
 
     def _check_keydown_events(self, event):
@@ -107,20 +107,27 @@ class AlienInvasion:
             self._exit_game()
 
 
-    def _check_play_button(self, mouse_pos):
-        """Start a new game when the player clicks Play."""
-                # button_clicked agerar flag här som lagrar ett True eller False-value.
-        button_clicked = self.play_button.rect.collidepoint(mouse_pos) # utvärderar om koordinaterna för recten på knappen kolliderar med koordinaterna i mouse_pos
-        if button_clicked and not self.game_active: # kollar om button_clicked är True (vilket det är om mustryck skett då den fått koordinater som values)
-                                                    # och om game_active är True/False - här resettas spelet om game_active är False (spelet är inte aktivt)
-                                                    # eftersom det således blir "not False" = True. Alltså True and True, vilket executar kodblocket för reset.
-            self._start_game()
+    def _check_button_clicks(self, mouse_pos):
+        """Start a new game with chosen difficulty based on button click"""
+        if self.ez_button.rect.collidepoint(mouse_pos) and not self.game_active: # utvärderar om x- och y-koordinaterna vid musklicket (mouse_pos)
+                                                                                 # kolliderar med knappen (isf True)
+                                                                                 # samt om game_active är True/False och invertera det med "not".
+                                                                                 # om spelet är aktivt (True) blir det False, eftersom "not True" = False
+            self._start_game(difficulty='ez')
+        elif self.normal_button.rect.collidepoint(mouse_pos) and not self.game_active:
+            self._start_game(difficulty='normal')
+        elif self.hard_button.rect.collidepoint(mouse_pos) and not self.game_active:
+            self._start_game(difficulty='hard')
 
 
-    def _start_game(self):
+    def _start_game(self, difficulty='normal'):
         """Start a new game."""
+
+        # Set the game difficulty
+        self.settings.set_difficulty(difficulty)
+
         # Reset the game settings (i.e. speeds tillbaka till default values)
-        self.settings.initialize_dynamic_settings()
+        self.settings.initialize_dynamic_settings(difficulty)
 
         # Reset the game statistics.
         self.stats.reset_stats()
