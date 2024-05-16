@@ -28,6 +28,11 @@ class Settings:
 
         # Alien settings
         self.fleet_drop_speed = 12 # Hastigheten samtliga aliens rör sig neråt (I Y-LED) i justeras ENKELT här.
+        
+        # 1 respektive -1 indikerar vänster/höger baserat på koordinatsystemet, specifikt x-ledet här.
+        # nedan fastställs startvärdet (1 = höger) och värdet multiplieras med -1 när fleeten träffar en skärmkant
+        # och betyder då riktning, se _check_fleet_edges i huvudfilen för den metoden
+        self.fleet_direction = 1
 
         # How quickly the game speeds up
         self.speedup_scale = 1.15 # (15%, 2 är dubbla, dvs 100%)
@@ -63,11 +68,6 @@ class Settings:
             self.bullet_speed = 3
             self.alien_speed = 3.2
 
-        # fleet_direction of 1 represents RIGHT; -1 represents LEFT
-        # man skulle kunna använda right/left med if/else, men siffror är enklare för att...
-        # för att flyttas till vänster = subtrahera från x-värde.
-        # för att flyttas till höger = addera till x-värde.
-        self.fleet_direction = 1
 
     def increase_speed(self):
         """Increase speed settings and alien points values"""
