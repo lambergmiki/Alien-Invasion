@@ -86,7 +86,7 @@ class AlienInvasion:
             elif event.type == pygame.KEYUP: # kollar om tangent är släppt (upp)
                 self._check_keyup_events(event)
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pos = pygame.mouse.get_pos() # hämtar x- och y-koordinater vid tidpunkten för musklicket - dessa lagras i mouse_pos.
+                mouse_pos = pygame.mouse.get_pos() # hämtar x- och y-koordinater vid tidpunkten för musklicket (som lagras i mouse_pos)
                 self._check_button_clicks(mouse_pos)
 
 
@@ -122,7 +122,7 @@ class AlienInvasion:
 
     def _start_game(self, difficulty='normal'):
         """Start a new game."""
-        
+
         # Set the game difficulty
         self.settings.set_difficulty(difficulty)
 
