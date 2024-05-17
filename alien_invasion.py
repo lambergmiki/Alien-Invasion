@@ -39,13 +39,16 @@ class AlienInvasion:
         self._create_fleet() # hjälpmethod som skapar flotta av aliens
 
         # Start Alien Invasion in an inactive state
-        self.game_active = False # spelet kan inte spelas nu förrän detta condition blir True (via en Playknapp, t.ex.)
+        # Spelet kan inte spelas förrän game_active nedan blir True (via en play-knapp)
+        self.game_active = False
 
         # Create the play buttons:
         self.ez_button = Button(self, "ez", 'left')
         self.normal_button = Button(self, "normal", 'center')
         self.hard_button = Button(self, "hard", 'right')
 
+        # Initially, the Joseph button is hidden
+        self.joseph_button = None
 
     def run_game(self):
         """Start the main loop for the game"""
@@ -103,21 +106,35 @@ class AlienInvasion:
             self._fire_bullet()
         elif (event.key == pygame.K_p) and (not self.game_active):
             self._start_game()
+        elif (event.key == pygame.K_j):
+            self._replace_normal_buttons() # Replaces normal modes with Josephs mode
         elif event.key == pygame.K_q:
             self._exit_game()
 
 
+    def _replace_normal_buttons(self):
+        """Replaces normal modes with Josephs mode"""
+        self.ez_button = None
+        self.normal_button = None
+        self.hard_button = None
+        self.joseph_button = Button(self, 'The Joseph-special')
+
+
     def _check_button_clicks(self, mouse_pos):
         """Start a new game with chosen difficulty based on button click"""
-        if self.ez_button.rect.collidepoint(mouse_pos) and not self.game_active: # utvärderar om x- och y-koordinaterna vid musklicket (mouse_pos)
-                                                                                 # kolliderar med knappen (isf True)
-                                                                                 # samt om game_active är True/False och invertera det med "not".
-                                                                                 # om spelet är aktivt (True) blir det False, eftersom "not True" = False
-            self._start_game(difficulty='ez')
-        elif self.normal_button.rect.collidepoint(mouse_pos) and not self.game_active:
-            self._start_game(difficulty='normal')
-        elif self.hard_button.rect.collidepoint(mouse_pos) and not self.game_active:
-            self._start_game(difficulty='hard')
+        # collidepoint med argumentet (mouse_pos) utvärderar om x- och y-koordinaterna vid musklicket kolliderar med berörd knapp
+        # om knappen inte existerar på skärmen finns inte heller dess rect, och collidepoint() kan inte genomföras
+        if not self.game_active:
+            # Check for collision on Joseph button if it exists
+            if self.joseph_button and self.joseph_button.rect and self.joseph_button.rect.collidepoint(mouse_pos):
+                self._start_game(difficulty='The Joseph Rashid Maalouf-special')
+            else: # if Joseph button is not clicked (because it doesn't exist), check others
+                if self.ez_button and self.ez_button.rect and self.ez_button.rect.collidepoint(mouse_pos):
+                    self._start_game(difficulty='ez')
+                elif self.normal_button and self.normal_button.rect and self.normal_button.rect.collidepoint(mouse_pos):
+                    self._start_game(difficulty='normal')
+                elif self.hard_button and self.hard_button.rect and self.hard_button.rect.collidepoint(mouse_pos):
+                    self._start_game(difficulty='hard')
 
 
     def _start_game(self, difficulty='normal'):
@@ -157,7 +174,7 @@ class AlienInvasion:
 
 
     def _fire_bullet(self):
-        """Create a new bullet and add it to the bullets group (kodrad 32)"""
+        """Create a new bullet and add it to the bullets group in the init"""
         if (len(self.bullets)) < self.settings.bullets_allowed:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
@@ -183,7 +200,10 @@ class AlienInvasion:
         # If so, get rid of the bullet and the alien
         # groupcollide() nedan identifierar överlapp mellan bullets och aliens respektive rects och
         # skapar ett key-value-par i den dictionary som den returnerar (detta sker internt, pygame-logik)
-        collisions = pygame.sprite.groupcollide( #En kollision = 1 poäng t.ex.
+        if self.settings.difficulty == 'The Joseph Rashid Maalouf-special':
+            collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, False, True) # False-argumentet gör att bullets inte deletas och därmed går igenom fiender
+        else:
+            collisions = pygame.sprite.groupcollide(
             self.bullets, self.aliens, True, True) # De två sista True-argen säger åt Python att deleta bullet och alien
 
         # POÄNGRÄKNING VIA COLLISIONS
@@ -319,9 +339,12 @@ class AlienInvasion:
 
         # Draw the mode buttons if the game is inactive
         if not self.game_active:
-            self.ez_button.draw_button()
-            self.normal_button.draw_button()
-            self.hard_button.draw_button()
+            if self.joseph_button:
+                self.joseph_button.draw_button()
+            else:
+                self.ez_button.draw_button()
+                self.normal_button.draw_button()
+                self.hard_button.draw_button()
 
         pygame.display.flip() # flyttar "bak" den gamla bilden och ersätter den med en ny display med ny info (t.ex. i samband med ett nedskjutet skepp, ett avlossat skott osv)
 

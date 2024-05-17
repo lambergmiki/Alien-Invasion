@@ -68,6 +68,12 @@ class Settings:
             self.bullet_speed = 3
             self.alien_speed = 3.2
 
+        elif difficulty == 'The Joseph Rashid Maalouf-special':
+            self.ship_speed = 10
+            self.bullet_speed = 6
+            self.alien_speed = 3
+            self.bullets_allowed = 100
+
 
     def increase_speed(self):
         """Increase speed settings and alien points values"""

@@ -9,7 +9,7 @@ class Button:
         self.screen_rect = self.screen.get_rect()
 
         # Set dimensions and properties of the button
-        self.width, self.height = 200, 50
+        self.width, self.height = (315, 75)
         self.button_color = (0, 135, 0) # dark green
         self.text_color = (255, 255, 255) # white
         self.font = pygame.font.SysFont(None, 48) # None-argumentet säger åt Python att använda default font, 48 är size på font
