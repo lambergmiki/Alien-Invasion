@@ -47,7 +47,7 @@ class AlienInvasion:
         self.normal_button = Button(self, "normal", 'center')
         self.hard_button = Button(self, "hard", 'right')
 
-        # Initially, the Joseph button is hidden
+        # Initially, the Joseph button is hidden, freezer is stored, dormant
         self.joseph_button = None
 
     def run_game(self):
@@ -60,7 +60,7 @@ class AlienInvasion:
                 self.ship.update() # callar metoden update från instancen ship (av class Ship) (om och om igen pga while-loopen i run_game)
                                     # hjälpmetoden _check_events() callas från denna (infinita) while loop utan att clustera kodblocket run_game.
                 
-                self._update_bullets() # som self.ship.update(), men här callas metoden mot en grupp (se kodrad 32) och denna update
+                self._update_bullets() # som self.ship.update(), men här callas metoden mot en grupp och denna update
                                     # gäller då alla sprites i gruppen (1 bullet = 1 sprite)
 
                 self._update_aliens() # callar hjälpmetoden _update_aliens() som i sin tur callar update() på aliens-gruppen där alla aliens uppdateras.
@@ -109,6 +109,7 @@ class AlienInvasion:
         elif (event.key == pygame.K_j):
             self._replace_normal_buttons() # Replaces normal modes with Josephs mode and adjusted settings
             self.ship.init_if_joseph_button() # method used to replace ship with picture of Joseph
+            self.change_alien_image() # method used to replace aliens with picture of freezer
         elif event.key == pygame.K_q:
             self._exit_game()
 
@@ -288,7 +289,7 @@ class AlienInvasion:
         # Create an alien and keep adding aliens until there is no room left.
         # Spacing between aliens is one alien width and one alien height.
         alien = Alien(self) # en "instance" (?) av classen Alien skapas
-        alien_width, alien_height = alien.rect.size # (en rects 'size' attributeär tuple av rectens height och width)
+        alien_width, alien_height = alien.rect.size # (en rects 'size' attribute är tuple av rectens height och width)
 
         current_x, current_y = alien_width, alien_height # current_x & y representerar position i x respektive y-led på NÄSTA alien jag önskar placera på skärmen. Dom assignas width och height på en alien.
         while current_y < (self.settings.screen_height - 3 * alien_height): # matteuttrycket betyder att en alien läggs till OM det finns utrymme
@@ -302,7 +303,7 @@ class AlienInvasion:
 
 
     def _create_alien(self, x_position, y_position):
-        """Create an alien and place it in the row."""    
+        """Create an alien and place it in the row."""
         new_alien = Alien(self) 
         new_alien.x = x_position # assignar positionen i x-led för NÄSTA alien till den nya aliens x-värde (ur ett koordinatperspektiv, dvs dess horisontella pos)
         new_alien.rect.x = x_position # assignar samma pos i x-led för NÄSTA aliens rect
@@ -317,6 +318,11 @@ class AlienInvasion:
                 self._change_fleet_direction() # callar fleet drop och direction change, sedan breakas loopen 
                 break
 
+    
+    def change_alien_image(self):
+        alien2 = Alien(self)
+        for alien2 in self.aliens.sprites():
+            alien2.switch_to_freezer()
 
     def _change_fleet_direction(self):
         """Drop the entire fleet and change fleet's direction"""
@@ -329,7 +335,7 @@ class AlienInvasion:
 
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen."""
-        self.screen.fill(self.settings.bg_color) # fill()-metoden fyller föregående variabel med färg.
+        self.screen.fill(self.settings.bg_color) # fill()-metoden fyller föregående variabel med argumentet (färg)
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
         self.ship.blitme() # blitme()-metoden ritar skeppet (funktionen är skriven i Ship-modulen och skeppets rect + image är assignat variabeln 'ship' här)
@@ -346,7 +352,6 @@ class AlienInvasion:
                 self.ez_button.draw_button()
                 self.normal_button.draw_button()
                 self.hard_button.draw_button()
-
         pygame.display.flip() # flyttar "bak" den gamla bilden och ersätter den med en ny display med ny info (t.ex. i samband med ett nedskjutet skepp, ett avlossat skott osv)
 
 if __name__ == '__main__':

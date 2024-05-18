@@ -25,6 +25,9 @@ class Alien(Sprite):
         # Store the alien's exact horizontal position
         self.x = float(self.rect.x) # assignar positionen i x.led till self.x, nu en float.
 
+        # enemy image if hidden mode is activated
+        self.freezer_image = pygame.image.load('freezer minskad.bmp')
+
 
     def check_edges(self):
         """Return True if alien is at edge of screen"""
@@ -35,3 +38,7 @@ class Alien(Sprite):
         """Move the alien right or left"""
         self.x += self.settings.alien_speed * self.settings.fleet_direction # dessa settings finns i filen settings.py
         self.rect.x = self.x
+
+    
+    def switch_to_freezer(self):
+        self.image = self.freezer_image
