@@ -30,19 +30,15 @@ class GameStats:
         try:
             with open('high_score.json', 'w') as file:
                 json.dump(high_score, file)
-                print("High score saved successfully:", high_score)
         except Exception as e:
-            print("An error occurred while saving the high score:", e)
+            print(f"didn't successfully save {high_score}")
 
 
     def _load_high_score(self):
         try:    
             with open('high_score.json', 'r') as file:
                 self.high_score = json.load(file)
-                print("High score loaded successfully:", self.high_score)
         except FileNotFoundError:
             self.high_score = 0
-            print("High score file not found. Setting high score to 0.")
         except Exception as e:
-            print("An error occurred while loading the high score:", e)
             self.high_score = 0

@@ -31,6 +31,15 @@ class Ship(Sprite):
         self.moving_left = False
 
 
+    def init_if_joseph_button(self):
+            self.image = pygame.image.load('joseph minskad.bmp')
+            self.rect = self.image.get_rect()
+            self.rect.midbottom = self.screen_rect.midbottom
+            self.x = float(self.rect.x)
+            self.moving_right = False
+            self.moving_left = False
+
+
     def center_ship(self):
         """Center ship on the screen."""
         self.rect.midbottom = self.screen_rect.midbottom

@@ -107,7 +107,8 @@ class AlienInvasion:
         elif (event.key == pygame.K_p) and (not self.game_active):
             self._start_game()
         elif (event.key == pygame.K_j):
-            self._replace_normal_buttons() # Replaces normal modes with Josephs mode
+            self._replace_normal_buttons() # Replaces normal modes with Josephs mode and adjusted settings
+            self.ship.init_if_joseph_button() # method used to replace ship with picture of Joseph
         elif event.key == pygame.K_q:
             self._exit_game()
 
