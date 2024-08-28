@@ -35,6 +35,7 @@ class AlienInvasion:
 
         self._create_fleet()
 
+        self.joseph_mode = False
         self.game_active = False
 
         self.ez_button = Button(self, "ez", 'left')
@@ -86,11 +87,16 @@ class AlienInvasion:
             self.ship.moving_left = True
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
-        elif (event.key == pygame.K_p) and (not self.game_active):
-            self._start_game()
         elif (event.key == pygame.K_j):
             self._replace_normal_buttons()
             self.ship.init_if_joseph_button()
+            self.joseph_mode = True
+        elif (event.key == pygame.K_p) and (not self.game_active):
+            if self.joseph_mode:
+                self._start_game(difficulty='The Joseph Rashid Maalouf-special')
+            else:
+                self._start_game()
+            self.joseph_mode = False
         elif event.key == pygame.K_q:
             self._exit_game()
 
