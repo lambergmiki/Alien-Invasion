@@ -40,6 +40,9 @@ class AlienInvasion:
 
         # Start Alien Invasion in an inactive state
         # Spelet kan inte spelas förrän game_active nedan blir True (via en play-knapp)
+        # "hidden mode" joseph_mode har också utgångsläge False, tills det aktiveras (via tangentryck "j")
+
+        self.joseph_mode = False
         self.game_active = False
 
         # Create the play buttons:
@@ -104,11 +107,16 @@ class AlienInvasion:
         # Fire bullet on pressed SPACE
         elif event.key == pygame.K_SPACE:
             self._fire_bullet()
-        elif (event.key == pygame.K_p) and (not self.game_active):
-            self._start_game()
         elif (event.key == pygame.K_j):
             self._replace_normal_buttons() # Replaces normal modes with Josephs mode and adjusted settings
             self.ship.init_if_joseph_button() # method used to replace ship with picture of Joseph
+            self.joseph_mode = True
+        elif (event.key == pygame.K_p) and (not self.game_active):
+            if self.joseph_mode:
+                self._start_game(difficulty='The Joseph Rashid Maalouf-special')
+            else:
+                self._start_game()
+            self.joseph_mode = False # Reset flag när spelet startat
         elif event.key == pygame.K_q:
             self._exit_game()
 
